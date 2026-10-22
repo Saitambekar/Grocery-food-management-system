@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Grocery Food Manager Logo.png') }}">
+
+    <title>Add Food - Food Manager</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: #f6f8f3;
+    color: #263326;
+    min-height: 100vh;
+}
+
+
+
+ .navbar {
+    width: 100%;
+    height: 74px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+
+    border-bottom: 1px solid #e5ebe2;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 4px 20px rgba(34, 65, 38, 0.05);
+}
+
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #285c32;
+
+    white-space: nowrap;
+}
+
+.logo-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eaf4e8;
+    border-radius: 11px;
+
+    font-size: 21px;
+}
+
+
+/* Center Navigation */
+.nav-links {
+    position: absolute;
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 32px;
+
+    list-style: none;
+}
+
+.nav-links a {
+    position: relative;
+
+    text-decoration: none;
+
+    color: #59645b;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    padding: 8px 0;
+
+    transition: 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #2f743b;
+}
+
+.nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    background: #3e8248;
+
+    border-radius: 10px;
+
+    transform: translateX(-50%);
+
+    transition: width 0.25s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 55px 0 70px;
+}
+
+
+.form-card {
+    width: 100%;
+    max-width: 500px;
+
+    margin: 0 auto;
+
+    padding: 38px 35px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    border-radius: 20px;
+
+    border: 1px solid #e3e8df;
+
+    box-shadow:
+        0 20px 50px rgba(43, 70, 47, 0.10),
+        0 5px 15px rgba(0, 0, 0, 0.04);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 25px 60px rgba(43, 70, 47, 0.13),
+        0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+.form-card h1 {
+    text-align: center;
+
+    color: #294d31;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    margin-bottom: 32px;
+
+    letter-spacing: -0.5px;
+}
+
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #344437;
+}
+
+
+input,
+select {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    margin-bottom: 21px;
+
+    border: 1px solid #d7ded4;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    font-family: inherit;
+
+    color: #263326;
+
+    background: #fbfcfa;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+input::placeholder {
+    color: #9aa39b;
+}
+
+input:focus,
+select:focus {
+    border-color: #5c9462;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(92, 148, 98, 0.12);
+}
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 2px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #3f7045;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px rgba(63, 112, 69, 0.22);
+
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    background: #315c3a;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(63, 112, 69, 0.28);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    margin-bottom: 35px;
+}
+
+.search-box input {
+    width: 375px;
+    margin: 0;
+}
+
+.search-box button {
+    width: 110px;
+}
+
+
+.table-card {
+    background: white;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #e3e8df;
+
+    box-shadow:
+        0 15px 40px rgba(43, 70, 47, 0.08);
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+th {
+    background: #3f7045;
+
+    color: white;
+
+    padding: 17px 12px;
+
+    font-size: 15px;
+}
+
+td {
+    padding: 14px 12px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #e6ebe4;
+
+    color: #39443b;
+
+    font-size: 14px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background: #f6faf5;
+}
+
+
+.delete-btn {
+    display: inline-block;
+
+    background: #dc5b5b;
+
+    color: white;
+
+    padding: 8px 15px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background: #c94444;
+
+    transform: translateY(-1px);
+}
+
+
+
+.page-title {
+    text-align: center;
+
+    font-size: 36px;
+
+    color: #294d31;
+
+    margin-bottom: 35px;
+}
+
+
+.bottom-text {
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #687269;
+
+    font-size: 14px;
+}
+
+.bottom-text a {
+    color: #3f7045;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.bottom-text a:hover {
+    text-decoration: underline;
+}
+
+
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .nav-links {
+        gap: 2px;
+    }
+
+    .nav-links a {
+        padding: 8px 10px;
+
+        font-size: 13px;
+    }
+
+    .container {
+        width: 92%;
+
+        padding-top: 35px;
+    }
+
+    .form-card {
+        padding: 30px 24px;
+
+        border-radius: 17px;
+    }
+
+    .form-card h1 {
+        font-size: 27px;
+    }
+
+    .search-box {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+
+    .table-card {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 700px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+ <nav class="navbar">
+
+        <div class="logo">
+            <div class="logo-icon">🍱</div>
+            <span>GroceryFoodManager</span>
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{{url_for('webhome')}}" class="active">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="{{url_for('add_food')}}">
+                    Add Food
+                </a>
+            </li>
+
+            <li>
+                <a href="{{url_for('view')}}">
+                    View Food
+                </a>
+            </li>
+
+
+            <li>
+    <a href="{{ url_for('waste_prevention') }}">
+        ♻️ Waste Prevention
+    </a>
+</li>
+
+        </ul>
+
+
+        <div class="nav-links" style="margin-left: 650px;">
+            <a href="{{url_for('webhome')}}">Go Back</a>
+        </div>
+
+    </nav>
+
+<div class="container">
+
+    <div class="form-card">
+
+        <h1>Add Food</h1>
+
+        <form action="/add" method="post">
+
+            <!-- Food Name -->
+            <label for="food_name">
+                Food Item
+            </label>
+
+            <input
+                type="text"
+                name="food_name"
+                id="food_name"
+                placeholder="Enter food name"
+                required
+            >
+
+
+            <!-- Category -->
+            <label for="category">
+                Category
+            </label>
+
+            <input
+                type="text"
+                name="category"
+                id="category"
+                placeholder="e.g. Fruit, Vegetable"
+                required
+            >
+
+
+            <!-- Quantity -->
+            <label for="quantity">
+                Quantity
+            </label>
+
+            <input
+                type="text"
+                name="quantity"
+                id="quantity"
+                placeholder="e.g. 5 kg, 2 packets, 10 pieces"
+                required
+            >
+
+
+            <!-- Storage Location -->
+            <label for="storage_location">
+                Storage Location
+            </label>
+
+            <input
+                type="text"
+                name="storage_location"
+                id="storage_location"
+                placeholder="e.g. Refrigerator, Freezer, Pantry"
+                required
+            >
+
+
+            <!-- Expiry Date -->
+            <label for="expiry">
+                Expiry Date
+            </label>
+
+            <input
+                type="date"
+                name="expiry"
+                id="expiry"
+                required
+            >
+
+
+            <!-- Submit -->
+            <button type="submit">
+                Add Food
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+```
+
+</body>
+
+</html>

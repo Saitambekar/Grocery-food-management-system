@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Grocery Food Manager Logo.png') }}">
+
+    <title>Smart Eat First - GroceryFoodManager</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f8f3;
+            color: #263326;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            width: 100%;
+            height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid #e5ebe2;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(34, 65, 38, 0.05);
+        }
+
+
+        /* Logo */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 21px;
+            font-weight: 700;
+            color: #285c32;
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eaf4e8;
+            border-radius: 11px;
+            font-size: 21px;
+        }
+
+
+        /* Center Navigation */
+
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            position: relative;
+            text-decoration: none;
+            color: #59645b;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 0;
+            transition: 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #2f743b;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #3e8248;
+            border-radius: 10px;
+            transform: translateX(-50%);
+            transition: width 0.25s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+
+        /* Go Back */
+
+        .back-link {
+            text-decoration: none;
+            color: #59645b;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .back-link:hover {
+            color: #2f743b;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 0 70px;
+        }
+
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: #294d31;
+            margin-bottom: 10px;
+            letter-spacing: -0.6px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6d776e;
+            font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+
+        /* =========================
+           FOOD CONTAINER
+        ========================= */
+
+        .food-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+
+
+        /* =========================
+           FOOD CARD
+        ========================= */
+
+        .food-card {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 22px;
+            border-radius: 17px;
+            border: 1px solid #e1e8df;
+            box-shadow:
+                0 12px 35px rgba(43, 70, 47, 0.08);
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 18px 40px rgba(43, 70, 47, 0.11);
+        }
+
+
+        /* Food Header */
+
+        .food-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 17px;
+            gap: 15px;
+        }
+
+        .food-name {
+            font-size: 21px;
+            font-weight: 700;
+            color: #294d31;
+        }
+
+
+        /* =========================
+           PRIORITY
+        ========================= */
+
+        .priority {
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .high {
+            background: #ffe1e1;
+            color: #c62828;
+        }
+
+        .medium {
+            background: #fff0c7;
+            color: #9a6b00;
+        }
+
+        .low {
+            background: #e2f3e4;
+            color: #2e7040;
+        }
+
+
+        /* =========================
+           FOOD DETAILS
+        ========================= */
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .detail {
+            background: #f7faf6;
+            padding: 13px;
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #7a847b;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #263326;
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           EMPTY MESSAGE
+        ========================= */
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 15px;
+            color: #777;
+            border: 1px solid #e1e8df;
+            box-shadow: 0 8px 25px rgba(43, 70, 47, 0.06);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 25px;
+            }
+
+            .nav-links {
+                gap: 18px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            .back-link {
+                display: none;
+            }
+
+            .details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                height: auto;
+                min-height: 74px;
+                padding: 12px 20px;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .nav-links {
+                position: static;
+                transform: none;
+                width: 100%;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 92%;
+                padding-top: 35px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .food-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .priority {
+                align-self: flex-start;
+            }
+
+            .details {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+        }
+
+
+        @media (max-width: 450px) {
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .food-card {
+                padding: 18px;
+            }
+
+            .page-title {
+                font-size: 25px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🍱
+            </div>
+
+            <span>
+                GroceryFoodManager
+            </span>
+
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{{ url_for('webhome') }}">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('add_food') }}">
+                    Add Food
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('view') }}">
+                    View Food
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('eat_first') }}"
+                   class="active">
+                    🍽️ Eat First
+                </a>
+            </li>
+
+
+            <li>
+    <a href="{{ url_for('waste_prevention') }}">
+        ♻️ Waste Prevention
+    </a>
+</li>
+
+        </ul>
+
+
+        <a href="{{ url_for('webhome') }}"
+           class="back-link">
+            Go Back
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================= -->
+
+    <div class="container">
+
+
+        <h1 class="page-title">
+            🍽️ Smart Eat First
+        </h1>
+
+
+        <p class="subtitle">
+            ML-powered recommendations for which food you should consume first
+        </p>
+
+
+        <div class="food-container">
+
+
+            {% if foods %}
+
+
+                {% for food in foods %}
+
+
+                    <div class="food-card">
+
+
+                        <div class="food-header">
+
+
+                            <div class="food-name">
+                                {{ food.food_name }}
+                            </div>
+
+
+                            <div class="priority
+                                {% if food.priority == 'HIGH' %}
+                                    high
+                                {% elif food.priority == 'MEDIUM' %}
+                                    medium
+                                {% else %}
+                                    low
+                                {% endif %}
+                            ">
+
+                                {% if food.priority == 'HIGH' %}
+
+                                    🔴 HIGH PRIORITY
+
+                                {% elif food.priority == 'MEDIUM' %}
+
+                                    🟠 MEDIUM PRIORITY
+
+                                {% else %}
+
+                                    🟢 LOW PRIORITY
+
+                                {% endif %}
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="details">
+
+
+                            <!-- Quantity -->
+
+                            <div class="detail">
+
+                                <div class="detail-label">
+                                    Quantity
+                                </div>
+
+                                <div class="detail-value">
+                                    {{ food.quantity }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- Category -->
+
+                            <div class="detail">
+
+                                <div class="detail-label">
+                                    Category
+                                </div>
+
+                                <div class="detail-value">
+                                    {{ food.category }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- Storage -->
+
+                            <div class="detail">
+
+                                <div class="detail-label">
+                                    Storage
+                                </div>
+
+                                <div class="detail-value">
+                                    {{ food.storage_location }}
+                                </div>
+
+                            </div>
+
+
+                            <!-- Days Remaining -->
+
+                            <div class="detail">
+
+                                <div class="detail-label">
+                                    Days Remaining
+                                </div>
+
+                                <div class="detail-value">
+
+                                    {% if food.days_left < 0 %}
+
+                                        Expired
+
+                                    {% elif food.days_left == 0 %}
+
+                                        Today
+
+                                    {% elif food.days_left == 1 %}
+
+                                        1 day
+
+                                    {% else %}
+
+                                        {{ food.days_left }} days
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div class="empty">
+
+                    🍽️ No food items available.
+
+                    <br>
+                    <br>
+
+                    Add some food items first.
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Grocery Food Manager Logo.png') }}">
+
+    <title>Account Manager</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f8f3;
+            color: #263326;
+            min-height: 100vh;
+        }
+
+
+        .navbar {
+            height: 76px;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            border-bottom: 1px solid #e4e9df;
+
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 700;
+
+            color: #315c3a;
+
+            letter-spacing: -0.4px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+
+            color: #4e5b50;
+
+            padding: 10px 17px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            background: #edf5eb;
+            color: #3f7045;
+
+            transform: translateY(-1px);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+
+            margin: auto;
+
+            padding: 55px 0 70px;
+        }
+
+
+
+        .page-title {
+            text-align: center;
+
+            font-size: 38px;
+            font-weight: 700;
+
+            color: #294d31;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+
+            color: #7b857c;
+
+            font-size: 15px;
+
+            margin-bottom: 35px;
+        }
+
+        .search-box {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 35px;
+        }
+
+        .search-box input {
+            width: 375px;
+
+            padding: 13px 16px;
+
+            border: 1px solid #d7ded4;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background: white;
+
+            color: #263326;
+
+            font-size: 14px;
+
+            transition: 0.25s ease;
+        }
+
+        .search-box input::placeholder {
+            color: #9aa39b;
+        }
+
+        .search-box input:focus {
+            border-color: #5c9462;
+
+            box-shadow:
+                0 0 0 3px rgba(92, 148, 98, 0.12);
+        }
+
+        .search-box button {
+            width: 110px;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background: #3f7045;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 6px 15px rgba(63, 112, 69, 0.20);
+
+            transition: 0.25s ease;
+        }
+
+        .search-box button:hover {
+            background: #315c3a;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 9px 20px rgba(63, 112, 69, 0.27);
+        }
+
+        .account-card {
+            background: white;
+
+            border: 1px solid #e1e8df;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 18px 45px rgba(43, 70, 47, 0.09);
+
+            transition: 0.25s ease;
+        }
+
+        .account-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 22px 50px rgba(43, 70, 47, 0.13);
+        }
+
+
+        .profile-section {
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            padding-bottom: 25px;
+
+            border-bottom: 1px solid #e7ece5;
+        }
+
+        .profile-icon {
+            width: 65px;
+            height: 65px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #edf5eb;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+        }
+
+        .profile-info h2 {
+            color: #294d31;
+
+            font-size: 21px;
+
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: #7b857c;
+
+            font-size: 14px;
+        }
+
+
+        .account-details {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+        .detail {
+            background: #f7faf6;
+
+            border: 1px solid #e5ebe3;
+
+            padding: 16px;
+
+            border-radius: 11px;
+        }
+
+        .detail-label {
+            display: block;
+
+            color: #7b857c;
+
+            font-size: 12px;
+
+            margin-bottom: 6px;
+        }
+
+        .detail-value {
+            display: block;
+
+            color: #344437;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            margin-top: 25px;
+
+            padding-top: 22px;
+
+            border-top: 1px solid #e7ece5;
+        }
+
+        .delete-btn {
+            display: inline-block;
+
+            background: #fff0f0;
+
+            color: #d95757;
+
+            margin-left: 10px;
+
+            padding: 10px 18px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+        .delete-btn:hover {
+            background: #ffe0e0;
+
+            color: #c64343;
+
+            transform: translateY(-2px);
+        }
+
+        .security {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #7b857c;
+
+            font-size: 13px;
+        }
+
+        .no-account {
+            background: white;
+
+            border: 1px solid #e1e8df;
+
+            border-radius: 18px;
+
+            padding: 45px 20px;
+
+            text-align: center;
+
+            color: #7b857c;
+
+            box-shadow:
+                0 12px 30px rgba(43, 70, 47, 0.07);
+        }
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .container {
+                width: 92%;
+
+                padding-top: 40px;
+            }
+
+            .page-title {
+                font-size: 30px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box input,
+            .search-box button {
+                width: 100%;
+            }
+
+            .account-card {
+                padding: 22px;
+            }
+
+            .account-details {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                justify-content: stretch;
+            }
+
+            .delete-btn {
+                width: 100%;
+
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🥗 Account Manager
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('webhome') }}">
+                Home
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <div class="container">
+
+
+        <h1 class="page-title">
+            Account Dashboard
+        </h1>
+
+        <p class="subtitle">
+            Manage your account information
+        </p>
+
+
+        <form
+            action="/search"
+            method="get"
+            class="search-box"
+        >
+
+            <input
+                type="text"
+                name="fname"
+                placeholder="Search Your Account"
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+        {% for data in acc %}
+
+        <div class="account-card">
+
+            <div class="profile-section">
+
+                <div class="profile-icon">
+                    👤
+                </div>
+
+                <div class="profile-info">
+
+                    <h2>
+                        {{ data.name }}
+                    </h2>
+
+                    <p>
+                        {{ data.email }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="account-details">
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Your Name
+                    </span>
+
+                    <span class="detail-value">
+                        {{ data.name }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Email Address
+                    </span>
+
+                    <span class="detail-value">
+                        {{ data.email }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Password
+                    </span>
+
+                    <span class="detail-value">
+                        ••••••••
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Account Status
+                    </span>
+
+                    <span class="detail-value">
+                        ✓ Active
+                    </span>
+
+                </div>
+
+
+            </div>
+
+            <div class="actions">
+
+    <!-- Delete Account -->
+    <a
+        href="{{ url_for('delete_user', u_id=data['_id']) }}"
+        onclick="return confirm('Do you really want to delete it?');"
+        class="delete-btn"
+    >
+        🗑 Delete Account
+    </a>
+
+    <!-- Logout -->
+    <a
+        href="{{ url_for('logout') }}"
+        onclick="return confirm('Do you really want to logout?');"
+        class="delete-btn"
+    >
+        🚪 Logout
+    </a>
+
+</div>
+
+
+        </div>
+
+        {% else %}
+
+        <div class="no-account">
+
+            👤
+
+            <br><br>
+
+            No account found.
+
+        </div>
+
+        {% endfor %}
+
+        <div class="security">
+
+            🔐 Your account information is protected
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

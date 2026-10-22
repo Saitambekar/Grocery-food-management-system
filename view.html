@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Grocery Food Manager Logo.png') }}">
+
+    <title>View Food - Food Manager</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    background: #f6f8f3;
+    color: #263326;
+    min-height: 100vh;
+}
+
+.navbar {
+    width: 100%;
+    height: 74px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+
+    border-bottom: 1px solid #e5ebe2;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 4px 20px rgba(34, 65, 38, 0.05);
+}
+
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #285c32;
+
+    white-space: nowrap;
+}
+
+.logo-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eaf4e8;
+    border-radius: 11px;
+
+    font-size: 21px;
+}
+
+
+/* Center Navigation */
+.nav-links {
+    position: absolute;
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 32px;
+
+    list-style: none;
+}
+
+.nav-links a {
+    position: relative;
+
+    text-decoration: none;
+
+    color: #59645b;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    padding: 8px 0;
+
+    transition: 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #2f743b;
+}
+
+.nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    background: #3e8248;
+
+    border-radius: 10px;
+
+    transform: translateX(-50%);
+
+    transition: width 0.25s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 55px 0 70px;
+}
+
+
+.page-title {
+    text-align: center;
+
+    font-size: 36px;
+    font-weight: 700;
+
+    color: #294d31;
+
+    margin-bottom: 32px;
+
+    letter-spacing: -0.6px;
+}
+
+.search-box {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 35px;
+}
+
+.search-box input {
+    width: 375px;
+
+    padding: 13px 16px;
+
+    margin: 0;
+
+    border: 1px solid #d7ded4;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: white;
+
+    color: #263326;
+
+    font-size: 14px;
+
+    transition: all 0.25s ease;
+}
+
+.search-box input::placeholder {
+    color: #9aa39b;
+}
+
+.search-box input:focus {
+    border-color: #5c9462;
+
+    box-shadow:
+        0 0 0 3px rgba(92, 148, 98, 0.12);
+}
+
+.search-box button {
+    width: 110px;
+
+    padding: 13px;
+
+    margin: 0;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #3f7045;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 15px rgba(63, 112, 69, 0.20);
+
+    transition: all 0.25s ease;
+}
+
+.search-box button:hover {
+    background: #315c3a;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 9px 20px rgba(63, 112, 69, 0.27);
+}
+
+
+
+.table-card {
+    background: rgba(255, 255, 255, 0.96);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    border: 1px solid #e2e8df;
+
+    box-shadow:
+        0 18px 45px rgba(43, 70, 47, 0.09);
+}
+
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+/* Table heading */
+
+th {
+    background: #3f7045;
+
+    color: white;
+
+    padding: 17px 14px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+td {
+    padding: 16px 14px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #e8ede6;
+
+    color: #465147;
+
+    font-size: 14px;
+}
+
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* Hover row */
+
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover td {
+    background: #f5faf4;
+}
+
+
+
+.delete-btn {
+    display: inline-block;
+
+    background: #d95757;
+
+    color: white;
+
+    padding: 8px 15px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    transition: all 0.25s ease;
+}
+
+.delete-btn:hover {
+    background: #c64343;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(201, 67, 67, 0.20);
+}
+
+tbody:empty::after {
+    content: "No food items found";
+
+    display: block;
+
+    padding: 30px;
+
+    color: #7b857c;
+
+    font-size: 14px;
+}
+
+
+@media (max-width: 700px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .nav-links {
+        gap: 2px;
+    }
+
+    .nav-links a {
+        padding: 8px 10px;
+
+        font-size: 13px;
+    }
+
+    .container {
+        width: 92%;
+
+        padding-top: 35px;
+    }
+
+    .page-title {
+        font-size: 28px;
+
+        margin-bottom: 25px;
+    }
+
+    .search-box {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+
+    .table-card {
+        overflow-x: auto;
+
+        border-radius: 14px;
+    }
+
+    table {
+        min-width: 700px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+ <nav class="navbar">
+
+        <div class="logo">
+            <div class="logo-icon">🍱</div>
+            <span>GroceryFoodManager</span>
+        </div>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{{url_for('webhome')}}" class="active">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="{{url_for('add_food')}}">
+                    Add Food
+                </a>
+            </li>
+
+            <li>
+                <a href="{{url_for('view')}}">
+                    View Food
+                </a>
+            </li>
+
+            <li>
+    <a href="{{ url_for('eat_first') }}">
+        🍽️ Eat First
+    </a>
+</li>
+
+
+<li>
+    <a href="{{ url_for('waste_prevention') }}">
+        ♻️ Waste Prevention
+    </a>
+</li>
+
+
+        </ul>
+
+
+        <div class="nav-links" style="margin-left: 650px;">
+            <a href="{{url_for('webhome')}}">Go Back</a>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1 class="page-title">
+            View Food Items
+        </h1>
+
+
+        <form action="/search"
+              method="get"
+              class="search-box">
+
+            <input
+                type="text"
+                name="fname"
+                id="fname"
+                placeholder="Search Food"
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- TABLE -->
+
+        <div class="table-card">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Food Item</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Expiry Date</th>
+                        <th>Delete Food</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for food in foods %}
+
+                    <tr>
+
+                        <td>
+                            {{ food.food_name }}
+                        </td>
+
+                        <td>
+                            {{ food.category }}
+                        </td>
+
+                        <td>
+                            {{ food.quantity }}
+                        </td>
+
+                        <td>
+                            {{ food.expiry }}
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="/delete/{{ food._id }}"
+                                onclick="return confirm('Do you really want to delete it?');"
+                                class="delete-btn"
+                            >
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

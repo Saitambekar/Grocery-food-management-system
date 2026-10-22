@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Grocery Food Manager Logo.png') }}">
+
+    <title>Register - Food Manager</title>
+
+<style>
+    
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef5e9, #f8faf5);
+    color: #263326;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* Background decoration */
+
+body::before {
+    content: "";
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    background: rgba(91, 148, 98, 0.12);
+
+    border-radius: 50%;
+
+    top: -120px;
+    left: -100px;
+}
+
+
+body::after {
+    content: "";
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    background: rgba(91, 148, 98, 0.10);
+
+    border-radius: 50%;
+
+    bottom: -120px;
+    right: -80px;
+}
+
+
+/* Register Card */
+
+.form-card {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 450px;
+
+    padding: 38px 40px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    border-radius: 24px;
+
+    border: 1px solid #e3e8df;
+
+    box-shadow:
+        0 25px 60px rgba(43, 70, 47, 0.12),
+        0 5px 20px rgba(0, 0, 0, 0.04);
+
+    backdrop-filter: blur(8px);
+
+    transition: transform 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+
+.form-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 30px 70px rgba(43, 70, 47, 0.16),
+        0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Food Icon */
+
+.form-card::before {
+    content: "🥬";
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 14px;
+
+    background: #edf5e9;
+
+    border-radius: 50%;
+
+    font-size: 28px;
+}
+
+
+/* Heading */
+
+.form-card h1 {
+    text-align: center;
+
+    color: #294d31;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* Subtitle */
+
+.form-card h1::after {
+    content: "Create your account and start managing your food.";
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #7a847b;
+
+    font-size: 13px;
+
+    font-weight: 400;
+
+    letter-spacing: 0;
+}
+
+
+/* Labels */
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #344437;
+}
+
+
+/* Input Fields */
+
+input,
+select {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #d7ded4;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    font-family: inherit;
+
+    color: #263326;
+
+    background: #f9fbf8;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+/* Placeholder */
+
+input::placeholder {
+    color: #a0a8a1;
+}
+
+
+/* Input Hover */
+
+input:hover {
+    border-color: #b9c9b8;
+}
+
+
+/* Input Focus */
+
+input:focus,
+select:focus {
+    border-color: #5c9462;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(92, 148, 98, 0.12);
+}
+
+
+/* Register Button */
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 4px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #477d4e,
+        #315f38
+    );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(63, 112, 69, 0.23);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+/* Button Hover */
+
+button:hover {
+    background: linear-gradient(
+        135deg,
+        #3f7045,
+        #294f30
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(63, 112, 69, 0.30);
+}
+
+
+/* Button Click */
+
+button:active {
+    transform: translateY(0);
+}
+
+
+/* Bottom Text */
+
+.bottom-text {
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #687269;
+
+    font-size: 13px;
+}
+
+
+.bottom-text a {
+    color: #3f7045;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    margin-left: 3px;
+}
+
+
+.bottom-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* Delete Button */
+
+.delete-btn {
+    display: inline-block;
+
+    background: #dc5b5b;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+
+/* Page Title */
+
+.page-title {
+    text-align: center;
+
+    font-size: 36px;
+
+    color: #294d31;
+
+    margin-bottom: 35px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 20px;
+    }
+
+    .form-card {
+        max-width: 100%;
+
+        padding: 32px 25px;
+
+        border-radius: 20px;
+    }
+
+    .form-card h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+    <div class="form-card">
+
+        <h1>Create Account</h1>
+
+        <form action="{{url_for('register')}}" method="post">
+
+            <label for="name">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Enter your full name"
+                required
+            >
+
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                minlength="6"
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}"
+                title="Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one digit."
+            >
+
+
+            <label for="confirm_password">
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                id="confirm_password"
+                placeholder="Confirm your password"
+                required
+                
+            >
+
+
+            <button type="submit">
+                Register
+            </button>
+
+        </form>
+
+
+        <p class="bottom-text">
+            Already have an account?
+
+            <a href="/login">
+                Login
+            </a>
+        </p>
+
+    </div>
+
+</body>
+
+</html>

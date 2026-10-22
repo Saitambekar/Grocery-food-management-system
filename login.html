@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/Grocery Food Manager Logo.png') }}">
+
+    <title>Login - Food Manager</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef5e9, #f8faf5);
+    color: #263326;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soft background decoration */
+body::before {
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: rgba(91, 148, 98, 0.12);
+    border-radius: 50%;
+    top: -120px;
+    left: -100px;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(91, 148, 98, 0.10);
+    border-radius: 50%;
+    bottom: -120px;
+    right: -80px;
+}
+
+
+/* Login Card */
+.form-card {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 430px;
+
+    padding: 42px 40px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border: 1px solid rgba(220, 230, 216, 0.9);
+    border-radius: 24px;
+
+    box-shadow:
+        0 25px 60px rgba(43, 70, 47, 0.12),
+        0 5px 20px rgba(0, 0, 0, 0.04);
+
+    backdrop-filter: blur(8px);
+
+    transition: 0.3s ease;
+}
+
+.form-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 30px 70px rgba(43, 70, 47, 0.16),
+        0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Small logo/icon area */
+.form-card::before {
+    content: "🥬";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    background: #edf5e9;
+    border-radius: 50%;
+
+    font-size: 28px;
+}
+
+
+/* Heading */
+.form-card h1 {
+    text-align: center;
+
+    color: #294d31;
+
+    font-size: 30px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+
+/* Subtitle */
+.form-card h1::after {
+    content: "Welcome back! Manage your food easily.";
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #7a847b;
+
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+
+/* Labels */
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #344437;
+}
+
+
+/* Input fields */
+input,
+select {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid #d7ded4;
+    border-radius: 11px;
+
+    outline: none;
+
+    font-size: 14px;
+    font-family: inherit;
+
+    color: #263326;
+
+    background: #f9fbf8;
+
+    transition: 0.25s ease;
+}
+
+input::placeholder {
+    color: #a0a8a1;
+}
+
+input:hover {
+    border-color: #b9c9b8;
+}
+
+input:focus,
+select:focus {
+    border-color: #5c9462;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(92, 148, 98, 0.12);
+}
+
+
+/* Login Button */
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 3px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: linear-gradient(
+        135deg,
+        #477d4e,
+        #315f38
+    );
+
+    color: white;
+
+    font-size: 15px;
+    font-family: inherit;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(63, 112, 69, 0.23);
+
+    transition: 0.25s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(63, 112, 69, 0.30);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+
+/* Register text */
+.bottom-text {
+    text-align: center;
+
+    margin-top: 22px;
+
+    color: #687269;
+
+    font-size: 13px;
+}
+
+.bottom-text a {
+    color: #3f7045;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    margin-left: 3px;
+}
+
+.bottom-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* Delete button - keep for other pages */
+.delete-btn {
+    display: inline-block;
+
+    background: #dc5b5b;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    body {
+        padding: 20px;
+    }
+
+    .form-card {
+        max-width: 100%;
+
+        padding: 35px 25px;
+
+        border-radius: 20px;
+    }
+
+    .form-card h1 {
+        font-size: 27px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+    <div class="form-card">
+
+        <h1>Login</h1>
+
+        <form action="/login" method="post">
+
+            <label for="email">Email</label>
+
+            <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+
+        <p class="bottom-text">
+            Don't have an account?
+            <a href="/">
+                Register
+            </a>
+        </p>
+
+    </div>
+
+</body>
+
+</html>
